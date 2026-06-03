@@ -3,36 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <title>Conference Presentation</title>
+
   <style>
     body {
       margin: 0;
-      background: #000;
-      color: #fff;
+      background: black;
       font-family: Arial, sans-serif;
+      overflow: hidden;
     }
 
-    .container {
-      display: flex;
-      flex-direction: column;
+    .slide {
+      width: 100vw;
       height: 100vh;
-    }
-
-    .slides {
-      flex: 2;
-      display: flex;
+      display: none;
       justify-content: center;
       align-items: center;
-      background: #111;
     }
 
-    .slides img {
-      max-width: 90%;
-      max-height: 100%;
+    .active {
+      display: flex;
     }
 
-    .mentimeter {
-      flex: 1;
-      border-top: 2px solid #333;
+    .qr img {
+      max-width: 60%;
     }
 
     iframe {
@@ -42,23 +35,58 @@
     }
   </style>
 </head>
+
 <body>
 
-<div class="container">
+<!-- Slide 1: QR -->
+<div class="slide active qr" id="slide1">
+  <img src="qr_urologie.png" alt="QR Code">
+</div>
 
-  <div style="height: 100vh; display: flex; justify-content: center; align-items: center; background: black;">
-    <img src="qr_urologie.png" style="max-width: 60%; height: auto;" alt="QR Code">
-  </div>
+<!-- Slide 2: Mentimeter -->
+<div class="slide" id="slide2">
 
-  <!-- Mentimeter section -->
-  <div class="mentimeter">
-    <iframe 
-      src="https://www.mentimeter.com/app/presentation/aluuny79aw4wbhun137im9y2rvfsokgk/embed"
-      allowfullscreen>
-    </iframe>
-  </div>
+  <iframe
+    sandbox="allow-popups allow-scripts allow-same-origin allow-presentation"
+    allowfullscreen
+    src="https://www.mentimeter.com/app/presentation/aluuny79aw4wbhun137im9y2rvfsokgk/embed">
+  </iframe>
 
 </div>
+
+<script>
+  let currentSlide = 1;
+  const totalSlides = 2;
+
+  function showSlide(n) {
+    for (let i = 1; i <= totalSlides; i++) {
+      document.getElementById("slide" + i).classList.remove("active");
+    }
+    document.getElementById("slide" + n).classList.add("active");
+  }
+
+  // click anywhere -> next slide
+  document.body.addEventListener("click", () => {
+    currentSlide++;
+    if (currentSlide > totalSlides) currentSlide = totalSlides;
+    showSlide(currentSlide);
+  });
+
+  // keyboard support (optional but useful)
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight" || e.key === " ") {
+      currentSlide++;
+      if (currentSlide > totalSlides) currentSlide = totalSlides;
+      showSlide(currentSlide);
+    }
+
+    if (e.key === "ArrowLeft") {
+      currentSlide--;
+      if (currentSlide < 1) currentSlide = 1;
+      showSlide(currentSlide);
+    }
+  });
+</script>
 
 </body>
 </html>
